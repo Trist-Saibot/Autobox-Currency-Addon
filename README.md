@@ -1,0 +1,1 @@
+Autobox-Currency-Addon
