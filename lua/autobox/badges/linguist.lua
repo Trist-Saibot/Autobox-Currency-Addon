@@ -1,0 +1,1 @@
+autobox.badge:RegisterBadge("linguist","Basic Linguist","You can now communicate with those you once thought savages.",2,"materials/icon16/book.png")

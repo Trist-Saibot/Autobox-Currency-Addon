@@ -1,0 +1,12 @@
+{
+    "title"       :    "ACC (Autobox Currency Core)",
+    "type"        :    "ServerContent",
+    "info"        :    "The Autobox currency system addon",
+    "tags"        :    [ "fun"],
+    "ignore"      :
+    [
+        "*.psd",
+        "*.vcproj",
+        "*.svn*"
+    ]
+}

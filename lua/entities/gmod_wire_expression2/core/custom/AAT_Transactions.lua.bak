@@ -1,0 +1,57 @@
+local confirmListeners = {} --ents listening for this event
+registerCallback("destruct",function(self) --remove when chip is removed
+	confirmListeners[self.entity] = nil
+end)
+
+hook.Add("AAT_ConfirmTransaction","E2_Catch",function(transactionID,answer)
+	local entry = {transactionID,answer}
+	for e,_ in pairs(confirmListeners) do
+		if IsValid(e) then
+			e:Execute()
+		else
+			confirmListeners[e] = nil
+		end
+	end
+end)
+
+-----------------------
+
+e2function void abxSendCurrency(entity ply,number amount)
+	if (!ply:IsValid() or !ply:IsPlayer() or ply:IsBot()) then return end
+	if (ply == self.player) then return end
+	autobox.currency:TransferCurrency(self.player,ply,amount)
+end
+e2function number abxRequestCurrency(entity ply,number amount)
+	if (!ply:IsValid() or !ply:IsPlayer() or ply:IsBot()) then return end
+	if (ply == self.player) then return end
+	return autobox.currency:RequestTransaction(self.player,ply,amount)
+end
+e2function number abxCheckTransactionStatus(number transactionID)
+	return autobox.currency:GetTransactionStatus(transactionID)
+end
+e2function number abxGetBalance(entity ply)
+	if (!ply:IsValid() or !ply:IsPlayer() or ply:IsBot()) then return end
+	local data = autobox.currency:GetCurrencyInfo(ply)
+	local bal = 0
+	if (data) then bal = data.Currency end
+	return bal
+end
+
+-----------------------
+
+e2function void abxRunOnTransaction(activate)
+	if activate ~= 0 then
+		confirmListeners[self.entity] = true
+	else
+		confirmListeners[self.entity] = nil
+	end
+end
+
+e2function number abxTransactionClk(number transactionID)
+	if(autobox.currency:GetTransactionStatus(transactionID) == 1) then
+		return 1
+	else
+		return 0
+	end
+end
+
